@@ -1,0 +1,135 @@
+openapi: 3.0.0
+info:
+  title: imonitor-api
+  version: '1.0'
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /auth/sign-in:
+    parameters: []
+    post:
+      summary: ''
+      operationId: post-auth-sign-in
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                    description: "jwt 토큰입니다\napi 서버에 전달할 땐\n`{tokenType} [accessToken]`값을 \nAuthorzation 헤더를 통해 전달합니다. \n\nex.\nAuthorization: Bearer sakdfjalsdf.asdfjklsadjf.fjdasklf"
+                  refreshToken:
+                    type: string
+                    description: 'accessToken이 만료되었을 때 사용합니다 '
+                  tokenType:
+                    type: string
+                    description: 토큰 타입
+                    example: Bearer
+                  userInfo:
+                    $ref: '#/components/schemas/UserInfo'
+                  message:
+                    type: string
+                required:
+                  - accessToken
+                  - refreshToken
+                  - tokenType
+                  - userInfo
+                  - message
+        '404':
+          description: |-
+            Not Found
+            사용자 정보가 존재하지 않을 때입니다
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                  - message
+      description: |-
+        로그인 하는 API
+
+        클라이언트 쪽에서 비밀번호를 SHA256 방식으로 암호화하여 전달하면
+        서버 쪽에서 SHA256 방식으로 한 번 더 암호화한 뒤 저장합니다.
+      parameters: []
+  /auth/refresh-token:
+    post:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                    description: "jwt 토큰입니다\napi 서버에 전달할 땐\n`{tokenType} [accessToken]`값을 \nAuthorzation 헤더를 통해 전달합니다. \n\nex.\nAuthorization: Bearer sakdfjalsdf.asdfjklsadjf.fjdasklf"
+                  refreshToken:
+                    type: string
+                    description: 'accessToken이 만료되었을 때 사용합니다 '
+                  tokenType:
+                    type: string
+                    description: 토큰 타입
+                    example: Bearer
+                  userInfo:
+                    $ref: '#/components/schemas/UserInfo'
+                  message:
+                    type: string
+                required:
+                  - accessToken
+                  - refreshToken
+                  - tokenType
+                  - userInfo
+                  - message
+        '401':
+          description: |-
+            Unauthorized
+            Authorization 헤더가 없는 경우
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '403':
+          description: |-
+            Forbidden
+            refreshToken이 만료된 경우
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+      operationId: get-auth-refresh-token
+      description: 'accessToken이 만료됐을 때 사용합니다 '
+      parameters:
+        - schema:
+            type: string
+            example: Bearer dflkasdjfl.fkldsajflk.fdsajflk
+          in: header
+          name: Authorization
+          description: refresh token
+          required: true
+components:
+  schemas:
+    UserInfo:
+      title: UserInfo
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        majar:
+          type: string
