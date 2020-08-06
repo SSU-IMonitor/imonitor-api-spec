@@ -50,10 +50,13 @@ paths:
                   - message
       description: 로그인 하는 API
       parameters: []
+      tags:
+        - auth
   /auth/refresh-token:
     post:
-      summary: Your GET endpoint
-      tags: []
+      summary: 토큰 재발급
+      tags:
+        - auth
       responses:
         '200':
           description: OK
@@ -157,6 +160,8 @@ paths:
             schema:
               $ref: '#/components/schemas/NewExamForm'
         description: ''
+      tags:
+        - exam
     get:
       summary: 시험 목록 조회
       operationId: get-exams
@@ -213,6 +218,8 @@ paths:
             type: integer
           in: query
           name: offset
+      tags:
+        - exam
   '/exams/{examId}':
     parameters:
       - schema:
@@ -223,7 +230,8 @@ paths:
         description: 시험 id
     get:
       summary: 특정 시험 정보 조회
-      tags: []
+      tags:
+        - exam
       responses:
         '200':
           description: OK
@@ -292,6 +300,8 @@ paths:
             schema:
               $ref: '#/components/schemas/SignUpForm'
         description: ''
+      tags:
+        - auth
   '/exams/{examId}/submit':
     parameters:
       - schema:
@@ -301,7 +311,7 @@ paths:
         required: true
         description: 시험 id
     post:
-      summary: ''
+      summary: 시험 제출
       operationId: post-exams-examId-submit
       responses:
         '200':
@@ -349,6 +359,8 @@ paths:
                   type: array
                   items:
                     $ref: '#/components/schemas/NewSubmitForm'
+      tags:
+        - submit
   '/users/{userId}/exams/{examId}/submit':
     parameters:
       - schema:
@@ -363,7 +375,8 @@ paths:
         required: true
     get:
       summary: 시험 결과 조회
-      tags: []
+      tags:
+        - submit
       responses:
         '200':
           description: OK
