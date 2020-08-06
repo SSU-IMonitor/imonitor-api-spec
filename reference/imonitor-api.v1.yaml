@@ -8,7 +8,7 @@ paths:
   /auth/sign-in:
     parameters: []
     post:
-      summary: ''
+      summary: 로그인
       operationId: post-auth-sign-in
       responses:
         '200':
@@ -30,14 +30,11 @@ paths:
                     example: Bearer
                   userInfo:
                     $ref: '#/components/schemas/UserInfo'
-                  message:
-                    type: string
                 required:
                   - accessToken
                   - refreshToken
                   - tokenType
                   - userInfo
-                  - message
         '404':
           description: |-
             Not Found
@@ -51,11 +48,7 @@ paths:
                     type: string
                 required:
                   - message
-      description: |-
-        로그인 하는 API
-
-        클라이언트 쪽에서 비밀번호를 SHA256 방식으로 암호화하여 전달하면
-        서버 쪽에서 SHA256 방식으로 한 번 더 암호화한 뒤 저장합니다.
+      description: 로그인 하는 API
       parameters: []
   /auth/refresh-token:
     post:
@@ -81,14 +74,11 @@ paths:
                     example: Bearer
                   userInfo:
                     $ref: '#/components/schemas/UserInfo'
-                  message:
-                    type: string
                 required:
                   - accessToken
                   - refreshToken
                   - tokenType
                   - userInfo
-                  - message
         '401':
           description: |-
             Unauthorized
@@ -121,6 +111,298 @@ paths:
           name: Authorization
           description: refresh token
           required: true
+  /exams:
+    post:
+      summary: 새로운 시험 등록
+      operationId: post-exams
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  exam:
+                    $ref: '#/components/schemas/ExamInfo'
+        '401':
+          description: |-
+            Unauthorized
+            access token이 없거나 만료되었을 경우
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: |-
+            Forbidden
+            시험을 등록할 수 있는 권한이 없는 경우
+            (EXAMIER만 등록 가능)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      description: 새로운 시험 등록
+      parameters:
+        - schema:
+            type: string
+            example: Bearer dflkasdjfl.fkldsajflk.fdsajflk
+          in: header
+          name: Authorization
+          description: access token
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewExamForm'
+        description: ''
+    get:
+      summary: 시험 목록 조회
+      operationId: get-exams
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  exams:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SimplifiedExamInfo'
+        '401':
+          description: |-
+            Unauthorized
+            access token이 없거나 만료되었을 경우
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      description: 시험 목록 조회
+      parameters:
+        - schema:
+            type: string
+            example: Bearer sdjkflsdf.sdjfklsdjfklsdsdjflksdf.dsfjlksdf
+          in: header
+          name: Authorization
+          description: access token
+          required: true
+        - schema:
+            type: string
+          in: query
+          name: coursecode
+          description: 과목 코드
+        - schema:
+            type: string
+          in: query
+          name: title
+          description: 시험 제목
+        - schema:
+            type: string
+          in: query
+          name: coursename
+          description: 과목명
+        - schema:
+            type: integer
+          in: query
+          name: limit
+          description: ''
+        - schema:
+            type: integer
+          in: query
+          name: offset
+  '/exams/{examId}':
+    parameters:
+      - schema:
+          type: integer
+        name: examId
+        in: path
+        required: true
+        description: 시험 id
+    get:
+      summary: 특정 시험 정보 조회
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  exam:
+                    $ref: '#/components/schemas/DetailedExamInfo'
+        '401':
+          description: |-
+            Unauthorized
+            access token 없거나 만료됐을 경우
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: |-
+            Forbidden
+            교수님이 허락한 학생만 시험을 볼 수 있음
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      operationId: get-exams-examId
+      description: 특정 시험 정보 조회
+      parameters:
+        - schema:
+            type: string
+            example: Bearer dfjaksdfhjakds.dsafjklasdjfl.dsfjklsdf
+          in: header
+          name: Authorization
+          description: ''
+          required: true
+  /auth/sign-up:
+    post:
+      summary: 회원가입
+      operationId: post-auth-sign-up
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                  refreshToken:
+                    type: string
+                  tokenType:
+                    type: string
+                  userInfo:
+                    $ref: '#/components/schemas/UserInfo'
+                required:
+                  - accessToken
+                  - refreshToken
+                  - userInfo
+                  - tokenType
+      description: 회원가입
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignUpForm'
+        description: ''
+  '/exams/{examId}/submit':
+    parameters:
+      - schema:
+          type: string
+        name: examId
+        in: path
+        required: true
+        description: 시험 id
+    post:
+      summary: ''
+      operationId: post-exams-examId-submit
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SubmitResultInfo'
+        '401':
+          description: |-
+            Unauthorized
+            access token이 없거나 만료됐을 경우
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: |-
+            Forbidden
+            교수님이 허락한 학생만 시험을 제출할 수 있음
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      description: 시험 제출
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Authorization
+          description: access token
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sumbits:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/NewSubmitForm'
+  '/users/{userId}/exams/{examId}/submit':
+    parameters:
+      - schema:
+          type: string
+        name: userId
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: examId
+        in: path
+        required: true
+    get:
+      summary: 시험 결과 조회
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SubmitResultInfo'
+                required:
+                  - result
+        '401':
+          description: |-
+            Unauthorized
+            access token이 없거나 만료됐을 경우
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: "Forbidden\n내가 제출한 시험 결과만 조회할 수 있음 "
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      operationId: get-users-userId-exams-examId-submit
+      description: 시험 결과 조회
+      parameters:
+        - schema:
+            type: string
+            enum: []
+            example: Bearer dklfajskdf.jskdlfjsdlkf.sdjfklsdf
+          in: header
+          name: Authorization
+          description: acccess token
+          required: true
 components:
   schemas:
     UserInfo:
@@ -133,3 +415,257 @@ components:
           type: string
         majar:
           type: string
+      required:
+        - id
+        - name
+        - majar
+    SimplifiedExamInfo:
+      title: SimplifiedExamInfo
+      type: object
+      properties:
+        id:
+          type: string
+        owner:
+          $ref: '#/components/schemas/UserInfo'
+        title:
+          type: string
+        courseName:
+          type: string
+        courseCode:
+          type: string
+        startTime:
+          type: string
+          format: time
+        endTime:
+          type: string
+          format: time
+      required:
+        - id
+        - owner
+        - title
+        - courseName
+        - courseCode
+        - startTime
+        - endTime
+    DetailedExamInfo:
+      title: SimplifiedExamInfo
+      type: object
+      properties:
+        id:
+          type: string
+        owner:
+          $ref: '#/components/schemas/UserInfo'
+        title:
+          type: string
+        courseName:
+          type: string
+        courseCode:
+          type: string
+        startTime:
+          type: string
+          format: time
+        endTime:
+          type: string
+          format: time
+        questions:
+          type: array
+          items:
+            $ref: '#/components/schemas/QuestionInfo'
+      required:
+        - id
+        - owner
+        - title
+        - courseName
+        - courseCode
+        - startTime
+        - endTime
+        - questions
+    ErrorResponse:
+      title: ErrorResponse
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
+    NewExamForm:
+      title: NewExamForm
+      type: object
+      properties:
+        title:
+          type: string
+          description: 시험 이름
+        courseName:
+          type: string
+          description: 과목 이름
+        courseCode:
+          type: string
+          description: 과목 코드
+        startTime:
+          type: string
+          description: 시작 시간
+        endTime:
+          type: string
+          description: 종료 시간
+        qnas:
+          type: array
+          items:
+            $ref: '#/components/schemas/NewQnaForm'
+      required:
+        - title
+        - courseName
+        - courseCode
+        - startTime
+        - endTime
+        - qnas
+    NewQnaForm:
+      title: NewQnaForm
+      type: object
+      properties:
+        question:
+          type: string
+          description: '문제  '
+        answer:
+          type: string
+          description: 답
+      required:
+        - question
+        - answer
+    QuestionInfo:
+      title: QuestionInfo
+      type: object
+      properties:
+        id:
+          type: string
+          description: qna id
+        question:
+          type: string
+          description: 문제
+        type:
+          type: string
+          description: 객관식 vs 주관식
+          enum:
+            - CHOICE
+            - SHORT_ANSWER
+        choices:
+          type: array
+          description: 객관식 선택지
+          items:
+            $ref: '#/components/schemas/AnswerChoiceInfo'
+      required:
+        - id
+        - question
+        - type
+    SIgnInForm:
+      title: SIgnInForm
+      type: object
+      properties:
+        id:
+          type: string
+          description: '학번  '
+        password:
+          type: string
+          description: 비밀번호
+      required:
+        - id
+        - password
+    SignUpForm:
+      title: SignUpForm
+      type: object
+      properties:
+        id:
+          type: string
+          description: 학번
+        password:
+          type: string
+          description: 비밀번호
+        major:
+          type: string
+          description: 전공
+      required:
+        - id
+        - password
+        - major
+    NewSubmitForm:
+      title: NewSubmitForm
+      type: object
+      properties:
+        qnaId:
+          type: integer
+          description: qna id
+        answer:
+          type: string
+          description: 제출한 답
+      required:
+        - answer
+        - qnaId
+    SubmitResultInfo:
+      title: SubmitResultInfo
+      type: object
+      properties:
+        qna:
+          $ref: '#/components/schemas/QnaInfo'
+        submit:
+          $ref: '#/components/schemas/SubmitInfo'
+        isCorrect:
+          type: boolean
+          description: 정답 여부
+      required:
+        - qna
+        - submit
+        - isCorrect
+    SubmitInfo:
+      title: SubmitInfo
+      type: object
+      properties:
+        question:
+          type: string
+        submittedAnswer:
+          type: string
+      required:
+        - question
+        - submittedAnswer
+    QnaInfo:
+      title: QnaInfo
+      type: object
+      properties:
+        id:
+          type: integer
+          description: qna id
+        question:
+          type: string
+          description: 문제
+        answer:
+          type: string
+        qnaType:
+          type: string
+          enum:
+            - CHOICE
+            - SHORT_ANSWER
+        choices:
+          type: array
+          description: 객관식 선택지
+          items:
+            $ref: ''
+      required:
+        - id
+        - question
+        - answer
+        - qnaType
+    AnswerChoiceInfo:
+      title: AnswerChoiceInfo
+      type: object
+      properties:
+        id:
+          type: string
+          description: answer choice id
+        content:
+          type: string
+          description: 객관식 선택지 내용
+        order:
+          type: integer
+          description: 보기 순서
+      required:
+        - id
+        - content
+        - order
