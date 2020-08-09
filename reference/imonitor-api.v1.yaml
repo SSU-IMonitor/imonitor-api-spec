@@ -3,7 +3,7 @@ info:
   title: imonitor-api
   version: '1.0'
 servers:
-  - url: 'http://localhost:3000'
+  - url: 'http://not.ready.yet/v1'
 paths:
   /auth/sign-in:
     parameters: []
@@ -127,7 +127,7 @@ paths:
                 type: object
                 properties:
                   exam:
-                    $ref: '#/components/schemas/ExamInfo'
+                    $ref: '#/components/schemas/DetailedExamInfo'
         '401':
           description: |-
             Unauthorized
@@ -470,6 +470,8 @@ components:
           $ref: '#/components/schemas/UserInfo'
         title:
           type: string
+        notice:
+          type: string
         courseName:
           type: string
         courseCode:
@@ -493,6 +495,7 @@ components:
         - startTime
         - endTime
         - questions
+        - notice
     ErrorResponse:
       title: ErrorResponse
       type: object
@@ -508,6 +511,9 @@ components:
         title:
           type: string
           description: 시험 이름
+        notice:
+          type: string
+          description: 시험 공지사항
         courseName:
           type: string
           description: 과목 이름
@@ -531,6 +537,7 @@ components:
         - startTime
         - endTime
         - qnas
+        - notice
     NewQnaForm:
       title: NewQnaForm
       type: object
@@ -650,7 +657,7 @@ components:
           description: 문제
         answer:
           type: string
-        qnaType:
+        type:
           type: string
           enum:
             - CHOICE
@@ -664,7 +671,7 @@ components:
         - id
         - question
         - answer
-        - qnaType
+        - type
     AnswerChoiceInfo:
       title: AnswerChoiceInfo
       type: object
