@@ -3,7 +3,7 @@ info:
   title: imonitor-api
   version: '1.0'
 servers:
-  - url: 'http://not.ready.yet'
+  - url: 'http://api.puroong.me'
 paths:
   /v1/auth/sign-in:
     parameters: []
@@ -66,6 +66,24 @@ paths:
       parameters: []
       tags:
         - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                password:
+                  type: string
+              required:
+                - id
+                - password
+            examples:
+              example-1:
+                value:
+                  id: '20202020'
+                  password: 9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08
   /v1/auth/refresh-token:
     post:
       summary: 토큰 재발급
