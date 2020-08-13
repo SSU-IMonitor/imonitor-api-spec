@@ -3,9 +3,9 @@ info:
   title: imonitor-api
   version: '1.0'
 servers:
-  - url: 'http://not.ready.yet/v1'
+  - url: 'http://not.ready.yet'
 paths:
-  /auth/sign-in:
+  /v1/auth/sign-in:
     parameters: []
     post:
       summary: 로그인
@@ -38,8 +38,8 @@ paths:
               examples:
                 example-1:
                   value:
-                    accessToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImV4cCI6MTY4MzcwMzg0NDU2N30.AuImY9eFPG22Yl6UCen9_b70HS-KqFDztx76Bkgyf44
-                    refreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImV4cCI6MTY4MzcwMzg0NDU2N30.AuImY9eFPG22Yl6UCen9_b70HS-KqFDztx76Bkgyf44
+                    accessToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+                    refreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
                     tokenType: Bearer
                     userInfo:
                       id: 1
@@ -66,7 +66,7 @@ paths:
       parameters: []
       tags:
         - auth
-  /auth/refresh-token:
+  /v1/auth/refresh-token:
     post:
       summary: 토큰 재발급
       tags:
@@ -99,8 +99,8 @@ paths:
               examples:
                 example-1:
                   value:
-                    accessToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImV4cCI6MTY4MzcwMzg0NDU2N30.AuImY9eFPG22Yl6UCen9_b70HS-KqFDztx76Bkgyf44
-                    refreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImV4cCI6MTY4MzcwMzg0NDU2N30.AuImY9eFPG22Yl6UCen9_b70HS-KqFDztx76Bkgyf44
+                    accessToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+                    refreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
                     tokenType: Bearer
                     userInfo:
                       id: 1
@@ -146,7 +146,8 @@ paths:
           name: Authorization
           description: refresh token
           required: true
-  /exams:
+    parameters: []
+  /v1/exams:
     post:
       summary: 새로운 시험 등록
       operationId: post-exams
@@ -374,7 +375,8 @@ paths:
           name: offset
       tags:
         - exam
-  '/exams/{examId}':
+    parameters: []
+  '/v1/exams/{examId}':
     parameters:
       - schema:
           type: integer
@@ -468,7 +470,7 @@ paths:
           name: Authorization
           description: ''
           required: true
-  /auth/sign-up:
+  /v1/auth/sign-up:
     post:
       summary: 회원가입
       operationId: post-auth-sign-up
@@ -496,8 +498,8 @@ paths:
               examples:
                 example-1:
                   value:
-                    accessToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImV4cCI6MTY4MzcwMzg0NDU2N30.AuImY9eFPG22Yl6UCen9_b70HS-KqFDztx76Bkgyf44
-                    refreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImV4cCI6MTY4MzcwMzg0NDU2N30.AuImY9eFPG22Yl6UCen9_b70HS-KqFDztx76Bkgyf44
+                    accessToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+                    refreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
                     tokenType: Bearer
                     userInfo:
                       id: 1
@@ -512,7 +514,8 @@ paths:
         description: ''
       tags:
         - auth
-  '/exams/{examId}/submit':
+    parameters: []
+  '/v1/exams/{examId}/submit':
     parameters:
       - schema:
           type: string
@@ -613,7 +616,7 @@ paths:
                     $ref: '#/components/schemas/NewSubmitForm'
       tags:
         - submit
-  '/users/{userId}/exams/{examId}/submit':
+  '/v1/users/{userId}/exams/{examId}/submit':
     parameters:
       - schema:
           type: string
