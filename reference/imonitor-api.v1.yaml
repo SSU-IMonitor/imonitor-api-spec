@@ -42,7 +42,7 @@ paths:
                     refreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
                     tokenType: Bearer
                     userInfo:
-                      id: 1
+                      id: '20202020'
                       name: 홍길동
                       major: 수학과
         '404':
@@ -121,7 +121,7 @@ paths:
                     refreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
                     tokenType: Bearer
                     userInfo:
-                      id: 1
+                      id: '20202020'
                       name: 홍길동
                       major: 수학과
         '401':
@@ -520,7 +520,7 @@ paths:
                     refreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
                     tokenType: Bearer
                     userInfo:
-                      id: 1
+                      id: '20202020'
                       name: 홍길동
                       major: 수학과
       description: 회원가입
