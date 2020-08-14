@@ -911,6 +911,9 @@ components:
         id:
           type: string
           description: 학번
+        name:
+          type: string
+          description: 학생 이름
         password:
           type: string
           description: 비밀번호
@@ -921,6 +924,7 @@ components:
         - id
         - password
         - major
+        - name
     NewSubmitForm:
       title: NewSubmitForm
       type: object
