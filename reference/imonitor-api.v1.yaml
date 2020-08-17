@@ -45,6 +45,15 @@ paths:
                       id: '20202020'
                       name: 홍길동
                       major: 수학과
+                example-2:
+                  value:
+                    accessToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+                    refreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+                    tokenType: Bearer
+                    userInfo:
+                      id: '20202021'
+                      name: 전우치
+                      major: 수학과
         '404':
           description: |-
             Not Found
@@ -123,6 +132,15 @@ paths:
                     userInfo:
                       id: '20202020'
                       name: 홍길동
+                      major: 수학과
+                example-2:
+                  value:
+                    accessToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+                    refreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+                    tokenType: Bearer
+                    userInfo:
+                      id: '20202021'
+                      name: 전우치
                       major: 수학과
         '401':
           description: |-
@@ -523,12 +541,22 @@ paths:
                       id: '20202020'
                       name: 홍길동
                       major: 수학과
+                example-2:
+                  value:
+                    accessToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+                    refreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+                    tokenType: Bearer
+                    userInfo:
+                      id: '20202021'
+                      name: 전우치
+                      major: 수학과
       description: 회원가입
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/SignUpForm'
+            examples: {}
         description: ''
       tags:
         - auth
@@ -725,7 +753,6 @@ paths:
       parameters:
         - schema:
             type: string
-            enum: []
             example: Bearer dklfajskdf.jskdlfjsdlkf.sdjfklsdf
           in: header
           name: Authorization
@@ -741,18 +768,20 @@ components:
           type: string
         name:
           type: string
-        majar:
+        major:
           type: string
       required:
         - id
         - name
-        - majar
+        - major
+      description: ''
     SimplifiedExamInfo:
       title: SimplifiedExamInfo
       type: object
+      description: ''
       properties:
         id:
-          type: string
+          type: integer
         owner:
           $ref: '#/components/schemas/UserInfo'
         title:
@@ -763,10 +792,10 @@ components:
           type: string
         startTime:
           type: string
-          format: time
+          format: date-time
         endTime:
           type: string
-          format: time
+          format: date-time
       required:
         - id
         - owner
