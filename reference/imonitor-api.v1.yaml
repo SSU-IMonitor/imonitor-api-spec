@@ -388,18 +388,8 @@ paths:
         - schema:
             type: string
           in: query
-          name: coursecode
-          description: 과목 코드
-        - schema:
-            type: string
-          in: query
-          name: title
-          description: 시험 제목
-        - schema:
-            type: string
-          in: query
-          name: coursename
-          description: 과목명
+          name: search
+          description: '과목 코드, 제목, 교수명에서 검색할 값'
         - schema:
             type: integer
           in: query
@@ -409,6 +399,21 @@ paths:
             type: integer
           in: query
           name: offset
+        - schema:
+            type: string
+          in: query
+          name: time
+          description: |-
+            시험 시작 시간
+
+            2020-08-20T12:00:00
+
+            이런식으로 전달하면 됩니다
+        - schema:
+            type: string
+          in: query
+          name: direction
+          description: 'DESC, ASC 둘 중 하나'
       tags:
         - exam
     parameters: []
