@@ -763,6 +763,206 @@ paths:
           name: Authorization
           description: acccess token
           required: true
+  '/v1/exams/{examId}/access-control':
+    parameters:
+      - schema:
+          type: string
+        name: examId
+        in: path
+        required: true
+    put:
+      summary: 시험 참가할 수 있는 권한 변경
+      operationId: put-v1-exams-examId-access-control
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessControl:
+                    type: string
+                  student:
+                    $ref: '#/components/schemas/UserInfo'
+                required:
+                  - accessControl
+                  - student
+      description: |-
+        시험 참가할 수 있는 권한 변경하는 API
+
+        교수가 학생 시험 참가를 허용하거나 밴 시킬 때 사용합니다
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: integer
+                accessControl:
+                  type: string
+          application/xml:
+            schema:
+              type: object
+              properties:
+                accessControl:
+                  type: string
+                  enum:
+                    - UNACCEPTED
+                    - ACCEPTED
+                    - BANNED
+                  description: |
+                    ACCEPTED, UNACCEPTED, BANNED 중 하나입니다
+                studentId:
+                  type: integer
+                  description: 시험 참가 권한 변경할 학생의 id
+              required:
+                - accessControl
+                - studentId
+  '/v1/users/{userId}/exams':
+    parameters:
+      - schema:
+          type: string
+        name: userId
+        in: path
+        required: true
+    get:
+      summary: 내 시험 목록 조회하기
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  exams:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SimplifiedExamInfo'
+              examples:
+                example-1:
+                  value:
+                    exams:
+                      - id: 1
+                        title: 해석학 중간고사
+                        notice: 오픈북 시험입니다
+                        courseName: 해석학
+                        courseCode: '20202020'
+                        startTime: '2020-08-11T08:00:00'
+                        endTime: '2020-08-11T10:00:00'
+                        owner:
+                          id: 1
+                          name: 홍길동
+                          major: 수학과
+                        questions:
+                          - id: 1
+                            question: 문제1
+                            type: CHOICE
+                            choices:
+                              - id: 1
+                                content: 답1
+                                order: 1
+                              - id: 2
+                                content: 답2
+                                order: 2
+                              - id: 3
+                                content: 답3
+                                order: 3
+                              - id: 4
+                                content: 답4
+                                order: 4
+                              - id: 5
+                                content: 답5
+                                order: 5
+                          - id: 2
+                            question: 문제2
+                            type: SHORT_ANSWER
+                      - id: 2
+                        title: 선형대수 중간고사
+                        notice: 온라인 시험입니다
+                        courseName: 선형대수
+                        courseCode: '20202020'
+                        startTime: '2020-08-11T08:00:00'
+                        endTime: '2020-08-11T10:00:00'
+                        owner:
+                          id: 1
+                          name: 홍길동
+                          major: 수학과
+                        questions:
+                          - id: 1
+                            question: 문제1
+                            type: CHOICE
+                            choices:
+                              - id: 1
+                                content: 답1
+                                order: 1
+                              - id: 2
+                                content: 답2
+                                order: 2
+                              - id: 3
+                                content: 답3
+                                order: 3
+                              - id: 4
+                                content: 답4
+                                order: 4
+                              - id: 5
+                                content: 답5
+                                order: 5
+                          - id: 2
+                            question: 문제2
+                            type: SHORT_ANSWER
+        '401':
+          description: |-
+            Unauthorized
+            access token이 없거나 만료되었을 경우
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                example-1:
+                  value:
+                    message: Unauthorized Error
+      operationId: get-v1-users-userId-exams-examId
+      parameters:
+        - schema:
+            type: string
+            example: Bearer dklfajskdf.jskdlfjsdlkf.sdjfklsdf
+          in: header
+          name: Authorization
+          description: acccess token
+          required: true
+      description: 사용자가 추가한 시험 목록 조회하는 API
+    post:
+      summary: 내 시험 추가하기
+      operationId: post-v1-users-userId-exams-examId
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  exams:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SimplifiedExamInfo'
+      description: 시험 추가하는 API
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                examId:
+                  type: integer
+                  description: 추가할 시험 id
+              required:
+                - examId
 components:
   schemas:
     UserInfo:
