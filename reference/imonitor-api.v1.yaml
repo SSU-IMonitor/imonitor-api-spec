@@ -829,7 +829,8 @@ paths:
         required: true
     get:
       summary: 내 시험 목록 조회하기
-      tags: []
+      tags:
+        - exam
       responses:
         '200':
           description: OK
@@ -947,10 +948,8 @@ paths:
               schema:
                 type: object
                 properties:
-                  exams:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/SimplifiedExamInfo'
+                  exam:
+                    $ref: '#/components/schemas/SimplifiedExamInfo'
       description: 시험 추가하는 API
       requestBody:
         content:
@@ -963,6 +962,16 @@ paths:
                   description: 추가할 시험 id
               required:
                 - examId
+      parameters:
+        - schema:
+            type: string
+            example: Bearer dklfajskdf.jskdlfjsdlkf.sdjfklsdf
+          in: header
+          name: Authorization
+          description: acccess token
+          required: true
+      tags:
+        - exam
 components:
   schemas:
     UserInfo:
