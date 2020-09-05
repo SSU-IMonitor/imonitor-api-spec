@@ -1023,6 +1023,8 @@ paths:
           description: acccess token
           required: true
       description: ''
+      tags:
+        - exam
 components:
   schemas:
     UserInfo:
