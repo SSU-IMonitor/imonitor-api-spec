@@ -972,6 +972,57 @@ paths:
           required: true
       tags:
         - exam
+  '/v1/users/{userId}/exams/{examId}':
+    parameters:
+      - schema:
+          type: integer
+        name: userId
+        in: path
+        required: true
+        description: 사용자 PK
+      - schema:
+          type: integer
+        name: examId
+        in: path
+        required: true
+        description: |
+          시험 PK
+    delete:
+      summary: 내가 추가했던 시험 삭제하기
+      operationId: delete-v1-users-userId-exams-examId
+      responses:
+        '204':
+          description: No Content
+          content:
+            application/json:
+              schema: {}
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      parameters:
+        - schema:
+            type: string
+            example: Bearer dklfajskdf.jskdlfjsdlkf.sdjfklsdf
+          in: header
+          name: Authorization
+          description: acccess token
+          required: true
+      description: ''
 components:
   schemas:
     UserInfo:
